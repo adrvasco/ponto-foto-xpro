@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ponto XPRO33</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F3D5C">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root{
+    --azul: #0F3D5C;
+    --azul-2: #145B85;
+    --verde: #1E8E5A;
+    --vermelho: #C0392B;
+    --amarelo: #D9A02B;
+    --fundo: #F2F4F6;
+    --cartao: #FFFFFF;
+    --texto: #1B2733;
+    --texto-suave: #5B6B7A;
+    --borda: #E1E6EA;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--fundo);
+    font-family:-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color:var(--texto);
+  }
+  #app{
+    max-width:480px; margin:0 auto; min-height:100vh;
+    display:flex; flex-direction:column;
+    background:var(--fundo);
+  }
+  #app.admin-wide{ max-width:720px; }
+  header{
+    background:var(--azul);
+    color:#fff;
+    padding:22px 20px 18px;
+    display:flex; align-items:center; gap:12px;
+  }
+  header .logo{
+    width:38px; height:38px; border-radius:10px;
+    background:var(--azul-2);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:15px; letter-spacing:0.5px;
+  }
+  header h1{ font-size:17px; margin:0; font-weight:600; }
+  header p{ margin:2px 0 0; font-size:12.5px; color:#CBD9E3; }
+  header .header-txt{ flex:1; }
+  header .icon-btn{
+    width:36px; height:36px; border-radius:9px; background:var(--azul-2);
+    border:none; color:#fff; font-size:16px; cursor:pointer; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  main{ flex:1; padding:18px 16px 90px; }
+
+  .card{
+    background:var(--cartao);
+    border-radius:16px;
+    padding:20px 18px;
+    box-shadow:0 1px 3px rgba(15,61,92,0.08);
+    border:1px solid var(--borda);
+    margin-bottom:16px;
+  }
+
+  .step-label{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.6px;
+    color:var(--texto-suave); font-weight:700; margin-bottom:6px;
+  }
+  h2{ font-size:19px; margin:0 0 4px; }
+  h3{ font-size:15.5px; margin:0 0 10px; }
+  .sub{ color:var(--texto-suave); font-size:14px; margin:0 0 18px; line-height:1.4; }
+
+  label{ display:block; font-size:13px; font-weight:600; color:var(--texto); margin:14px 0 6px; }
+  input[type="text"], input[type="password"], input[type="date"], input[type="tel"], select{
+    width:100%; padding:13px 14px; font-size:16px;
+    border:1.5px solid var(--borda); border-radius:11px;
+    background:#FAFBFC; color:var(--texto);
+    font-family:inherit;
+  }
+  input:focus, select:focus{ outline:none; border-color:var(--azul-2); background:#fff; }
+  select{ appearance:none; -webkit-appearance:none; }
+
+  .toggle-group{ display:flex; gap:10px; margin-top:4px; }
+  .toggle-btn{
+    flex:1; padding:18px 8px; border-radius:14px; border:2px solid var(--borda);
+    background:#FAFBFC; font-size:17px; font-weight:800; color:var(--texto-suave);
+    text-align:center; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;
+  }
+  .toggle-btn .icone{ font-size:30px; line-height:1; }
+  .toggle-btn.entrada{ background:#E8F5EC; border-color:#8FD1AA; color:var(--verde); }
+  .toggle-btn.saida{ background:#FBEAE8; border-color:#EBA9A0; color:var(--vermelho); }
+  .toggle-btn.entrada.active{ background:var(--verde); border-color:var(--verde); color:#fff; }
+  .toggle-btn.saida.active{ background:var(--vermelho); border-color:var(--vermelho); color:#fff; }
+
+  .confirmacao-foto-wrap{ display:flex; justify-content:center; margin-top:4px; }
+  .confirmacao-foto{
+    width:150px; height:150px; border-radius:50%; object-fit:cover;
+    border:3px solid var(--azul-2); background:#DDE3E8;
+  }
+
+  .grade-func{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:8px;
+  }
+  .func-tile{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    padding:8px 4px; border:2px solid var(--borda); border-radius:14px;
+    background:#FAFBFC; cursor:pointer;
+  }
+  .func-tile img, .func-tile .placeholder{
+    width:100%; aspect-ratio:1/1; border-radius:50%; object-fit:cover; background:#DDE3E8;
+  }
+  .func-tile .placeholder{
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:800; color:var(--texto-suave);
+  }
+  .func-tile span.nome-tile{ font-size:11.5px; text-align:center; color:var(--texto); line-height:1.25; font-weight:600; }
+
+  .btn-primary{
+    width:100%; padding:15px; margin-top:22px;
+    background:var(--azul); color:#fff; border:none; border-radius:12px;
+    font-size:16px; font-weight:700; cursor:pointer;
+  }
+  .btn-primary:disabled{ background:#A9B7C1; }
+  .btn-secondary{
+    width:100%; padding:14px; margin-top:10px;
+    background:#fff; color:var(--azul); border:1.5px solid var(--azul); border-radius:12px;
+    font-size:15px; font-weight:700; cursor:pointer;
+  }
+  .btn-secondary:disabled{ color:#A9B7C1; border-color:#D8DEE3; }
+  .btn-small{
+    padding:9px 12px; border-radius:9px; border:1.5px solid var(--borda);
+    background:#fff; color:var(--texto-suave); font-size:13px; font-weight:600; cursor:pointer;
+  }
+  .btn-small.danger{ color:var(--vermelho); border-color:#F1C6C0; }
+  .btn-small.primary{ color:var(--azul-2); border-color:var(--azul-2); }
+  .btn-link{
+    background:none; border:none; color:var(--azul-2); font-size:13.5px;
+    font-weight:600; cursor:pointer; padding:8px 0; text-decoration:underline;
+  }
+
+  .status-box{
+    display:flex; align-items:center; gap:12px;
+    padding:14px; border-radius:12px; margin-top:12px;
+    background:#F5F8FA; border:1px solid var(--borda);
+  }
+  .status-box .dot{
+    width:10px; height:10px; border-radius:50%; background:#B9C4CC; flex-shrink:0;
+  }
+  .status-box.ok .dot{ background:var(--verde); }
+  .status-box.warn .dot{ background:var(--amarelo); }
+  .status-box.err .dot{ background:var(--vermelho); }
+  .status-box .txt{ font-size:14px; line-height:1.4; }
+  .status-box .txt b{ display:block; font-size:14.5px; margin-bottom:2px; }
+
+  .spinner{
+    width:16px; height:16px; border-radius:50%;
+    border:2px solid #C7D2D8; border-top-color:var(--azul-2);
+    animation:spin 0.8s linear infinite; flex-shrink:0;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  video, canvas, .foto-preview{
+    width:100%; border-radius:14px; background:#000; display:block;
+  }
+  video{ transform:scaleX(-1); aspect-ratio:3/4; object-fit:cover; }
+  .foto-preview{ aspect-ratio:3/4; object-fit:cover; }
+
+  .camera-wrap{ position:relative; margin-top:4px; }
+  .btn-shutter{
+    position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+    width:62px; height:62px; border-radius:50%;
+    background:#fff; border:4px solid rgba(255,255,255,0.5);
+    box-shadow:0 2px 8px rgba(0,0,0,0.35);
+  }
+
+  .resumo-linha{
+    display:flex; justify-content:space-between; padding:10px 0;
+    border-bottom:1px solid var(--borda); font-size:14.5px;
+  }
+  .resumo-linha:last-child{ border-bottom:none; }
+  .resumo-linha .k{ color:var(--texto-suave); }
+  .resumo-linha .v{ font-weight:600; text-align:right; }
+
+  .sucesso-icone{
+    width:74px; height:74px; border-radius:50%;
+    background:#E8F5EC; color:var(--verde);
+    display:flex; align-items:center; justify-content:center;
+    font-size:38px; margin:6px auto 18px;
+  }
+  .center{ text-align:center; }
+
+  .rodape{
+    text-align:center; font-size:11.5px; color:var(--texto-suave);
+    padding:14px 16px 22px;
+  }
+
+  .erro-txt{ color:var(--vermelho); font-size:13.5px; margin-top:8px; }
+  .ok-txt{ color:var(--verde); font-size:13.5px; margin-top:8px; }
+  .hidden{ display:none !important; }
+
+  /* ---- ADMIN ---- */
+  .admin-tabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .admin-tab{
+    flex:1; text-align:center; padding:11px 6px; border-radius:10px;
+    background:#EDF1F4; color:var(--texto-suave); font-size:13.5px; font-weight:700; cursor:pointer;
+  }
+  .admin-tab.active{ background:var(--azul); color:#fff; }
+
+  .lista-func{ list-style:none; margin:0; padding:0; }
+  .lista-func li{
+    padding:11px 2px; border-bottom:1px solid var(--borda); font-size:14.5px;
+  }
+  .lista-func li:last-child{ border-bottom:none; }
+  .func-linha{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .func-nome{ flex:1; }
+  .func-acoes{ display:flex; gap:6px; flex-shrink:0; }
+  .badge{
+    display:inline-block; font-size:11px; font-weight:700; padding:3px 8px;
+    border-radius:20px; margin-top:3px;
+  }
+  .badge.ok{ background:#E8F5EC; color:var(--verde); }
+  .badge.pendente{ background:#FBF1DC; color:#946A0E; }
+
+  .form-linha{ display:flex; gap:8px; margin-top:14px; }
+  .form-linha input{ flex:1; }
+  .form-linha button{ flex-shrink:0; width:auto; margin-top:0; padding:0 16px; border-radius:11px; }
+
+  .data-grid{ display:flex; gap:10px; }
+  .data-grid > div{ flex:1; }
+
+  table.rel-tabela{ width:100%; border-collapse:collapse; font-size:12.5px; margin-top:10px; }
+  table.rel-tabela th, table.rel-tabela td{
+    text-align:left; padding:8px 6px; border-bottom:1px solid var(--borda);
+  }
+  table.rel-tabela th{ color:var(--texto-suave); text-transform:uppercase; font-size:10.5px; letter-spacing:0.4px; }
+  table.rel-tabela .flag{ color:var(--vermelho); font-weight:600; }
+  .tabela-scroll{ overflow-x:auto; }
+
+  .acoes-relatorio{ display:flex; gap:10px; margin-top:14px; }
+  .acoes-relatorio button{ flex:1; margin-top:0; }
+
+  .pin-boxes{ display:flex; gap:8px; margin-top:6px; }
+  .pin-boxes input{
+    text-align:center; font-size:22px; letter-spacing:2px; font-weight:700;
+  }
+
+  @media print{
+    header, .rodape, .no-print, #tela-admin-login{ display:none !important; }
+    body, #app{ background:#fff; }
+    .card{ box-shadow:none; border:none; padding:0; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">X33</div>
+    <div class="header-txt">
+      <h1>Ponto XPRO33</h1>
+      <p id="header-sub">Registro de ponto com foto, rosto e localização</p>
+    </div>
+    <button class="icon-btn no-print" id="btn-abrir-admin" onclick="abrirAdmin()" title="Área do administrador">&#9881;</button>
+  </header>
+
+  <main>
+
+    <!-- ====================== FLUXO DE PONTO ====================== -->
+
+    <!-- ETAPA 1: IDENTIFICAÇÃO -->
+    <section id="etapa-1" class="card">
+      <div class="step-label">Etapa 1 de 4</div>
+      <h2>Tipo de registro</h2>
+      <p class="sub">Sua identidade será confirmada por reconhecimento facial na próxima etapa.</p>
+
+      <div class="toggle-group">
+        <div class="toggle-btn entrada" id="btn-entrada" onclick="selecionarTipo('entrada')"><span class="icone">⬆</span>Entrada</div>
+        <div class="toggle-btn saida" id="btn-saida" onclick="selecionarTipo('saida')"><span class="icone">⬇</span>Saída</div>
+      </div>
+      <div class="erro-txt hidden" id="erro-etapa1"></div>
+
+      <button class="btn-primary" onclick="irParaEtapa2()">Continuar</button>
+    </section>
+
+    <!-- ETAPA 2: LOCALIZAÇÃO -->
+    <section id="etapa-2" class="card hidden">
+      <div class="step-label">Etapa 2 de 4</div>
+      <h2>Confirmar localização</h2>
+      <p class="sub">Precisamos confirmar que você está em uma das unidades XPRO33.</p>
+
+      <div class="status-box" id="loc-status">
+        <div class="spinner"></div>
+        <div class="txt"><b>Obtendo localização...</b>Aceite a permissão de GPS do navegador.</div>
+      </div>
+
+      <button class="btn-secondary" id="btn-tentar-loc" onclick="obterLocalizacao()">Tentar novamente</button>
+      <button class="btn-primary" id="btn-continuar-loc" onclick="irParaEtapa3()" disabled>Continuar</button>
+    </section>
+
+    <!-- ETAPA 3: FOTO + IDENTIFICAÇÃO FACIAL AUTOMÁTICA -->
+    <section id="etapa-3" class="card hidden">
+      <div class="step-label">Etapa 3 de 4</div>
+      <h2>Quem é você?</h2>
+      <p class="sub">Centralize o rosto e toque no botão. O app tenta identificar você automaticamente.</p>
+
+      <div class="camera-wrap" id="camera-wrap">
+        <video id="video" autoplay playsinline></video>
+        <button class="btn-shutter" id="btn-shutter" onclick="capturarFoto()"></button>
+      </div>
+      <img id="foto-preview" class="foto-preview hidden">
+      <div class="erro-txt hidden" id="erro-camera"></div>
+
+      <div class="status-box hidden" id="status-verificacao"></div>
+
+      <div id="bloco-confirmacao-facial" class="hidden">
+        <div class="confirmacao-foto-wrap">
+          <img id="foto-candidato" class="confirmacao-foto" alt="">
+        </div>
+        <p class="sub" id="texto-confirmacao-facial" style="margin:10px 0; text-align:center; font-size:16px; font-weight:700;"></p>
+        <div class="toggle-group">
+          <div class="toggle-btn entrada active" style="cursor:pointer;" onclick="confirmarIdentidadeFacial(true)"><span class="icone">✓</span>Sim, sou eu</div>
+          <div class="toggle-btn saida active" style="cursor:pointer;" onclick="confirmarIdentidadeFacial(false)"><span class="icone">✕</span>Não sou eu</div>
+        </div>
+      </div>
+
+      <div id="bloco-manual" class="hidden">
+        <p class="sub" style="margin-bottom:6px;">Toque na sua foto</p>
+        <div id="grade-funcionarios" class="grade-func"></div>
+        <div class="erro-txt hidden" id="erro-lista-func">Nenhum funcionário cadastrado ainda. Peça ao administrador para cadastrar na área de admin.</div>
+      </div>
+
+      <div id="bloco-pin" class="hidden">
+        <label for="input-pin-func">Seu rosto não foi confirmado. Digite seu PIN</label>
+        <input type="tel" id="input-pin-func" maxlength="4" inputmode="numeric" placeholder="****">
+        <div class="erro-txt hidden" id="erro-pin-func"></div>
+        <button class="btn-secondary" onclick="confirmarPin()">Confirmar com PIN</button>
+      </div>
+
+      <button class="btn-secondary hidden" id="btn-repetir-foto" onclick="refazerFoto()">Tirar outra foto</button>
+      <button class="btn-primary" id="btn-continuar-foto" onclick="irParaEtapa4()" disabled>Continuar</button>
+    </section>
+
+    <!-- ETAPA 4: CONFIRMAÇÃO -->
+    <section id="etapa-4" class="card hidden">
+      <div class="step-label">Etapa 4 de 4</div>
+      <h2>Confirmar registro</h2>
+      <p class="sub">Revise os dados antes de enviar.</p>
+
+      <div id="resumo"></div>
+
+      <div class="erro-txt hidden" id="erro-envio"></div>
+      <button class="btn-primary" id="btn-enviar" onclick="enviarRegistro()">Confirmar ponto</button>
+    </section>
+
+    <!-- ETAPA 5: SUCESSO -->
+    <section id="etapa-5" class="card hidden center">
+      <div class="sucesso-icone">✓</div>
+      <h2 id="sucesso-titulo">Ponto registrado!</h2>
+      <p class="sub" id="sucesso-detalhe"></p>
+      <button class="btn-primary" onclick="reiniciar()">Novo registro</button>
+    </section>
+
+    <!-- ====================== ADMIN ====================== -->
+
+    <!-- LOGIN ADMIN -->
+    <section id="tela-admin-login" class="card hidden">
+      <div class="step-label">Área restrita</div>
+      <h2>Login do administrador</h2>
+      <p class="sub">Digite a senha para gerenciar funcionários e emitir o relatório.</p>
+
+      <label for="input-senha-admin">Senha</label>
+      <input type="password" id="input-senha-admin" autocomplete="off">
+      <div class="erro-txt hidden" id="erro-admin-login"></div>
+
+      <button class="btn-primary" onclick="tentarLoginAdmin()">Entrar</button>
+      <button class="btn-link" onclick="fecharAdmin()">Voltar ao ponto</button>
+    </section>
+
+    <!-- PAINEL ADMIN -->
+    <section id="tela-admin" class="hidden">
+
+      <div class="admin-tabs no-print">
+        <div class="admin-tab active" id="tab-func" onclick="mudarAbaAdmin('func')">Funcionários</div>
+        <div class="admin-tab" id="tab-rel" onclick="mudarAbaAdmin('rel')">Relatório</div>
+      </div>
+
+      <!-- ABA FUNCIONÁRIOS -->
+      <div id="painel-func" class="card">
+        <h3>Cadastro de funcionários</h3>
+        <p class="sub">Só nomes cadastrados aqui aparecem na lista de ponto. Cada funcionário também precisa ter rosto e PIN cadastrados para poder bater o próprio ponto.</p>
+
+        <div class="form-linha">
+          <input type="text" id="input-novo-func" placeholder="Nome completo">
+          <select id="input-novo-func-tipo" style="flex-shrink:0; width:auto;">
+            <option value="diarista">Diarista</option>
+            <option value="clt">CLT</option>
+          </select>
+          <button class="btn-primary" style="margin-top:0;" onclick="adicionarFuncionario()">Adicionar</button>
+        </div>
+        <div class="erro-txt hidden" id="erro-func"></div>
+
+        <ul class="lista-func" id="lista-func"></ul>
+
+        <button class="btn-link no-print" id="btn-importar-inicial" onclick="importarListaInicial()">Importar lista inicial (32 nomes de Caxias/SJM)</button>
+        <button class="btn-link no-print" onclick="importarPixIniciais()">Importar chaves PIX da planilha original</button>
+      </div>
+
+      <!-- SUB-PAINEL: CADASTRAR ROSTO E PIN -->
+      <div id="painel-cadastro-facial" class="card hidden">
+        <h3 id="cadastro-facial-titulo">Cadastrar rosto e PIN</h3>
+        <p class="sub">Peça para o funcionário olhar para a câmera. Essa foto vira a referência usada para confirmar a identidade dele nas próximas batidas de ponto.</p>
+
+        <div class="camera-wrap" id="camera-wrap-admin">
+          <video id="video-admin" autoplay playsinline></video>
+          <button class="btn-shutter" onclick="capturarFotoAdmin()"></button>
+        </div>
+        <img id="foto-preview-admin" class="foto-preview hidden">
+        <div class="erro-txt hidden" id="erro-camera-admin"></div>
+        <button class="btn-secondary hidden" id="btn-repetir-foto-admin" onclick="refazerFotoAdmin()">Tirar outra foto</button>
+
+        <label for="input-pin-admin">PIN de 4 dígitos</label>
+        <div class="pin-boxes">
+          <input type="tel" id="input-pin-admin" maxlength="4" inputmode="numeric" placeholder="0000">
+          <input type="tel" id="input-pin-admin-confirmar" maxlength="4" inputmode="numeric" placeholder="Confirmar">
+        </div>
+        <div class="erro-txt hidden" id="erro-cadastro-facial"></div>
+        <div class="ok-txt hidden" id="ok-cadastro-facial"></div>
+
+        <button class="btn-primary" onclick="salvarCadastroFacial()">Salvar cadastro</button>
+        <button class="btn-link" onclick="fecharCadastroFacial()">Cancelar</button>
+      </div>
+
+      <!-- ABA RELATÓRIO -->
+      <div id="painel-rel" class="card hidden">
+        <h3>Relatório para fechamento de folha</h3>
+        <p class="sub">Selecione o período e gere o relatório com registros brutos e horas trabalhadas.</p>
+
+        <div class="data-grid">
+          <div>
+            <label for="rel-data-de">De</label>
+            <input type="date" id="rel-data-de">
+          </div>
+          <div>
+            <label for="rel-data-ate">Até</label>
+            <input type="date" id="rel-data-ate">
+          </div>
+        </div>
+
+        <label for="rel-feriados">Feriados no período (opcional)</label>
+        <input type="text" id="rel-feriados" placeholder="dd/mm/aaaa, dd/mm/aaaa">
+
+        <button class="btn-primary no-print" onclick="gerarRelatorio()">Gerar relatório</button>
+        <div class="erro-txt hidden" id="erro-relatorio"></div>
+
+        <div id="resultado-relatorio" class="hidden">
+          <div class="acoes-relatorio no-print">
+            <button class="btn-secondary" onclick="baixarExcel()">Baixar Excel</button>
+            <button class="btn-secondary" onclick="window.print()">Imprimir</button>
+          </div>
+
+          <h3 style="margin-top:22px;">Diaristas · horas e valor por dia</h3>
+          <div class="tabela-scroll">
+            <table class="rel-tabela" id="tabela-resumo-diarista"></table>
+          </div>
+
+          <h3 style="margin-top:22px;">CLT · horas por categoria e por semana</h3>
+          <p class="sub" style="margin-bottom:6px;">Semana seg-sex até 44h = normal; acima disso e sábado inteiro = extra 50%. Noturno (22h-5h) é adicional à parte. Domingo/feriado = dobra 100%.</p>
+          <div class="tabela-scroll">
+            <table class="rel-tabela" id="tabela-resumo-clt"></table>
+          </div>
+
+          <h3 style="margin-top:22px;">Registros brutos</h3>
+          <div class="tabela-scroll">
+            <table class="rel-tabela" id="tabela-bruta"></table>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-link no-print" onclick="sairAdmin()">Sair da área do administrador</button>
+
+    </section>
+
+  </main>
+
+  <div class="rodape">XPRO33 &middot; Indústria e Comércio de Cosméticos</div>
+</div>
+
+<!-- Firebase (compat SDK) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<!-- SheetJS para exportar Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- face-api.js para reconhecimento facial no navegador -->
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+<script>
+(function(){
+
+  // ---------- CONFIG FIREBASE ----------
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEQ0pAsCBdDbo2RwcQlmD3jx6HteKfNC4",
+    authDomain: "folha-de-ponto-xpro.firebaseapp.com",
+    databaseURL: "https://folha-de-ponto-xpro-default-rtdb.firebaseio.com",
+    projectId: "folha-de-ponto-xpro",
+    storageBucket: "folha-de-ponto-xpro.firebasestorage.app",
+    messagingSenderId: "988072192165",
+    appId: "1:988072192165:web:590e4f9ff775bb18a2454c"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const CAMINHO_REGISTROS = "registros_ponto_foto";
+  const CAMINHO_FUNCIONARIOS = "funcionarios_ponto_foto";
+
+  // ---------- CONFIG ADMIN ----------
+  const ADMIN_SENHA = "Prosperidade22";
+
+  // ---------- CONFIG UNIDADES ----------
+  const RAIO_METROS = 300;
+  const UNIDADES = [
+    { nome: "Caxias",  lat: -22.7834367, lng: -43.3181701 },
+    { nome: "SJM",     lat: -22.7696178, lng: -43.3755080 },
+    { nome: "Sede",    lat: -22.7704519, lng: -43.3542938 }
+  ];
+
+  // ---------- CONFIG RECONHECIMENTO FACIAL ----------
+  const MODEL_URL = "https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights";
+  const LIMIAR_DISTANCIA = 0.5; // menor = mais parecido. Usado na confirmação 1:1 (nome escolhido manualmente).
+  const LIMIAR_AUTO = 0.45; // mais rígido, usado na identificação automática (1:N, sem nome escolhido antes) para reduzir risco de confundir duas pessoas.
+  let modelosProntos = null;
+  let modelosCarregados = false;
+
+  function carregarModelosFace(){
+    modelosProntos = Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+      faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+      faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+    ]).then(function(){
+      modelosCarregados = true;
+    }).catch(function(err){
+      modelosCarregados = false;
+      console.error("Falha ao carregar modelos de reconhecimento facial:", err);
+    });
+    return modelosProntos;
+  }
+
+  async function obterDescritorDeVideo(videoEl){
+    if(!modelosCarregados) return null;
+    if(!videoEl.videoWidth) return null;
+    const deteccao = await faceapi
+      .detectSingleFace(videoEl, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceDescriptor();
+    return deteccao ? Array.from(deteccao.descriptor) : null;
+  }
+
+  // Lista inicial (Caxias + SJM, nomes duplicados nas duas unidades unificados)
+  const LISTA_INICIAL_FUNCIONARIOS = [
+    "Andrea Albuquerque","Beatriz Do Nascimento Silva","Bryan De Siqueira E Souza",
+    "Davi Cassiano Da Silva","Glaucio Batista De Freitas","Isac Tadeu Monteiro David",
+    "João Vitor Monteiro David","João Vitor Vieira Calisto","Joice De Oliveira",
+    "Luciene Lucas Pereira","Maycon Santos De Azevedo","Monica Maria Da Silva",
+    "Raissa Ignácio Medeiros","Rian Gabriel Rosa Aurélio","Rodrigo Alexandre Luiz",
+    "Rosana Da Silva E Silva","Sara Da Mota Batista","Shayara Letícia Moraes Santana",
+    "Shayenny Alexandra","Suellen Felisberto Dos Santos","Ticiane Da Conceição Baptista",
+    "Walessa Oliveira Faria","Ana Clara Rocha Dos Prazeres","André França Da Silva Souza",
+    "Antero Cavalcante De Almeida Júnior","Diego De Lima Peres Junior","Ingrid De Águiar De Oliveira",
+    "João Vitor Santos","Raissa Vitória","Ramon Stanllei Da Silva",
+    "Sebastião Moura Da Silva","Tatiana Silveiro De Oliveira"
+  ];
+
+  // Chaves PIX iniciais (extraídas da planilha de pagamento Caxias/SJM). Só preenche quem já tinha chave cadastrada.
+  const PIX_INICIAIS = {
+    "Andrea Albuquerque": "21991256774",
+    "Beatriz Do Nascimento Silva": "60d559a7-38ee-4e4a-bff1-e3992ca6f5fe",
+    "Bryan De Siqueira E Souza": "174.027.387-79",
+    "Davi Cassiano Da Silva": "21976775296",
+    "Glaucio Batista De Freitas": "158.384.287-08",
+    "Isac Tadeu Monteiro David": "17869911798",
+    "João Vitor Monteiro David": "21991454317",
+    "João Vitor Vieira Calisto": "067.006.737-71",
+    "Joice De Oliveira": "12206875705",
+    "Luciene Lucas Pereira": "14381511794",
+    "Maycon Santos De Azevedo": "b0ec0ba9-8b2d-4fd0-b749-40afe1b2b001",
+    "Monica Maria Da Silva": "11742857701",
+    "Raissa Ignácio Medeiros": "21979705714",
+    "Rian Gabriel Rosa Aurélio": "20455406774",
+    "Rodrigo Alexandre Luiz": "124.895.297.90",
+    "Rosana Da Silva E Silva": "21991348267",
+    "Sara Da Mota Batista": "21991723620",
+    "Shayara Letícia Moraes Santana": "21975800175",
+    "Shayenny Alexandra": "21966302475",
+    "Suellen Felisberto Dos Santos": "12218310708",
+    "Ticiane Da Conceição Baptista": "17009427780",
+    "Walessa Oliveira Faria": "21966213341",
+    "Ana Clara Rocha Dos Prazeres": "21978921269",
+    "André França Da Silva Souza": "andrefrancadasilvadouza@gmail.com",
+    "Antero Cavalcante De Almeida Júnior": "21986634705",
+    "Diego De Lima Peres Junior": "19748320740",
+    "João Vitor Santos": "21125484764",
+    "Raissa Vitória": "21985478834",
+    "Ramon Stanllei Da Silva": "18682479702",
+    "Sebastião Moura Da Silva": "21971178936",
+    "Tatiana Silveiro De Oliveira": "171.815.677-48"
+  };
+
+  // ---------- ESTADO ----------
+  const estado = {
+    funcKey: "", nome: "", tipo: null, lat: null, lng: null, precisaoM: null,
+    unidadeProxima: null, distanciaM: null, dentroDoRaio: false,
+    fotoDataUrl: null, streamCamera: null,
+    verificado: false, metodoVerificacao: null, distanciaFacial: null,
+    descritorCapturado: null, candidatoChave: null, candidatoNome: null, candidatoDistancia: null
+  };
+
+  // Cache compartilhado de funcionários (nome, pin, descritor), usado no fluxo de ponto e no admin
+  let funcionariosCache = {};
+
+  const adminEstado = {
+    autenticado: false,
+    ultimoRelatorio: null,
+    chaveCadastroAtual: null,
+    streamCameraAdmin: null,
+    fotoAdminDataUrl: null,
+    descritorAdmin: null
+  };
+
+  // ---------- HELPERS ----------
+  function $(id){ return document.getElementById(id); }
+
+  function mostrarEtapa(n){
+    for(let i=1;i<=5;i++){
+      $("etapa-"+i).classList.toggle("hidden", i!==n);
+    }
+    $("tela-admin-login").classList.add("hidden");
+    $("tela-admin").classList.add("hidden");
+    $("app").classList.remove("admin-wide");
+    window.scrollTo(0,0);
+  }
+
+  function haversineMetros(lat1, lon1, lat2, lon2){
+    const R = 6371000;
+    const toRad = x => x * Math.PI / 180;
+    const dLat = toRad(lat2-lat1);
+    const dLon = toRad(lon2-lon1);
+    const a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+              Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*
+              Math.sin(dLon/2)*Math.sin(dLon/2);
+    const c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R*c;
+  }
+
+  function unidadeMaisProxima(lat, lng){
+    let melhor = null, menorDist = Infinity;
+    UNIDADES.forEach(u=>{
+      const d = haversineMetros(lat, lng, u.lat, u.lng);
+      if(d < menorDist){ menorDist = d; melhor = u; }
+    });
+    return { unidade: melhor, distancia: menorDist };
+  }
+
+  function formatarHora(d){
+    return d.toLocaleString("pt-BR", { dateStyle:"short", timeStyle:"medium" });
+  }
+
+  function chaveDia(d){
+    const ano = d.getFullYear();
+    const mes = String(d.getMonth()+1).padStart(2,"0");
+    const dia = String(d.getDate()).padStart(2,"0");
+    return ano+"-"+mes+"-"+dia;
+  }
+
+  function formatarDiaBr(chave){
+    const [a,m,d] = chave.split("-");
+    return d+"/"+m+"/"+a;
+  }
+
+  function formatarHoras(horasDecimais){
+    const h = Math.floor(horasDecimais);
+    const m = Math.round((horasDecimais - h) * 60);
+    return h + "h" + String(m).padStart(2,"0");
+  }
+
+  function escaparHtml(txt){
+    const div = document.createElement("div");
+    div.textContent = txt;
+    return div.innerHTML;
+  }
+
+  function normalizarFuncionario(valor){
+    // Compatível tanto com o formato antigo (string = nome) quanto com o novo (objeto)
+    if(typeof valor === "string"){
+      return { nome: valor, pin: null, descritor: null, fotoRef: null, tipo: "diarista", chavePix: null };
+    }
+    return {
+      nome: valor.nome || "",
+      pin: valor.pin || null,
+      descritor: valor.descritor || null,
+      fotoRef: valor.fotoRef || null,
+      tipo: valor.tipo === "clt" ? "clt" : "diarista",
+      chavePix: valor.chavePix || null
+    };
+  }
+
+  // ---------- CACHE DE FUNCIONÁRIOS (fluxo de ponto + admin) ----------
+  function iniciarCacheFuncionarios(){
+    db.ref(CAMINHO_FUNCIONARIOS).on("value", function(snap){
+      const dados = snap.val() || {};
+      funcionariosCache = {};
+      Object.keys(dados).forEach(function(chave){
+        funcionariosCache[chave] = normalizarFuncionario(dados[chave]);
+      });
+      renderizarGradeFuncionarios();
+      if(adminEstado.autenticado){ renderizarListaFuncionariosAdmin(); }
+    });
+  }
+
+  function iniciaisDoNome(nome){
+    const partes = (nome || "").trim().split(/\s+/);
+    const a = partes[0] ? partes[0][0] : "";
+    const b = partes.length > 1 ? partes[partes.length-1][0] : "";
+    return (a + b).toUpperCase();
+  }
+
+  function renderizarGradeFuncionarios(){
+    const grade = $("grade-funcionarios");
+    const entradas = Object.entries(funcionariosCache)
+      .sort((a,b) => a[1].nome.localeCompare(b[1].nome, "pt-BR"));
+
+    if(entradas.length === 0){
+      grade.innerHTML = "";
+      $("erro-lista-func").classList.remove("hidden");
+      return;
+    }
+    $("erro-lista-func").classList.add("hidden");
+    grade.innerHTML = entradas.map(function(e){
+      const chave = e[0], reg = e[1];
+      const foto = reg.fotoRef
+        ? '<img src="'+reg.fotoRef+'" alt="">'
+        : '<div class="placeholder">'+escaparHtml(iniciaisDoNome(reg.nome))+'</div>';
+      return '<div class="func-tile" onclick="selecionarFuncionarioManual(\''+chave+'\')">'+
+        foto+
+        '<span class="nome-tile">'+escaparHtml(reg.nome)+'</span>'+
+      '</div>';
+    }).join("");
+  }
+
+  window.selecionarFuncionarioManual = function(chave){
+    estado.funcKey = chave;
+    estado.nome = funcionariosCache[chave] ? funcionariosCache[chave].nome : "";
+    if(!estado.funcKey) return;
+
+    const reg = funcionariosCache[estado.funcKey];
+    const statusBox = $("status-verificacao");
+    $("bloco-pin").classList.add("hidden");
+    $("erro-pin-func").classList.add("hidden");
+
+    if(!reg || (!reg.descritor && !reg.pin)){
+      statusBox.classList.remove("hidden");
+      statusBox.className = "status-box err";
+      statusBox.innerHTML = '<div class="dot"></div><div class="txt"><b>Cadastro incompleto</b>Seu rosto e PIN ainda não foram cadastrados pelo administrador. Procure o admin antes de bater o ponto.</div>';
+      return;
+    }
+
+    if(reg.descritor && estado.descritorCapturado){
+      const distancia = faceapi.euclideanDistance(estado.descritorCapturado, reg.descritor);
+      if(distancia <= LIMIAR_DISTANCIA){
+        estado.verificado = true;
+        estado.metodoVerificacao = "facial";
+        estado.distanciaFacial = distancia;
+        statusBox.classList.remove("hidden");
+        statusBox.className = "status-box ok";
+        statusBox.innerHTML = '<div class="dot"></div><div class="txt"><b>Identidade confirmada por reconhecimento facial</b></div>';
+        $("btn-continuar-foto").disabled = false;
+        return;
+      }
+    }
+
+    statusBox.classList.remove("hidden");
+    statusBox.className = "status-box warn";
+    statusBox.innerHTML = '<div class="dot"></div><div class="txt"><b>Não foi possível confirmar seu rosto</b>Confirme com seu PIN abaixo.</div>';
+    if(reg.pin){
+      $("bloco-pin").classList.remove("hidden");
+    }
+  };
+
+  // ---------- ETAPA 1 ----------
+  window.selecionarTipo = function(tipo){
+    estado.tipo = tipo;
+    $("btn-entrada").classList.toggle("active", tipo==="entrada");
+    $("btn-saida").classList.toggle("active", tipo==="saida");
+  };
+
+  window.irParaEtapa2 = function(){
+    const erroEl = $("erro-etapa1");
+    if(!estado.tipo){
+      erroEl.textContent = "Selecione Entrada ou Saída.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+    erroEl.classList.add("hidden");
+    mostrarEtapa(2);
+    obterLocalizacao();
+  };
+
+  // ---------- ETAPA 2 ----------
+  window.obterLocalizacao = function(){
+    const box = $("loc-status");
+    box.className = "status-box";
+    box.innerHTML = '<div class="spinner"></div><div class="txt"><b>Obtendo localização...</b>Aceite a permissão de GPS do navegador.</div>';
+    $("btn-continuar-loc").disabled = true;
+
+    if(!navigator.geolocation){
+      box.className = "status-box err";
+      box.innerHTML = '<div class="dot"></div><div class="txt"><b>Não suportado</b>Este navegador não oferece geolocalização.</div>';
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(function(pos){
+      estado.lat = pos.coords.latitude;
+      estado.lng = pos.coords.longitude;
+      estado.precisaoM = Math.round(pos.coords.accuracy || 0);
+
+      const resultado = unidadeMaisProxima(estado.lat, estado.lng);
+      estado.unidadeProxima = resultado.unidade.nome;
+      estado.distanciaM = Math.round(resultado.distancia);
+      estado.dentroDoRaio = resultado.distancia <= RAIO_METROS;
+
+      if(estado.dentroDoRaio){
+        box.className = "status-box ok";
+        box.innerHTML = '<div class="dot"></div><div class="txt"><b>Localização confirmada</b>Você está a '+estado.distanciaM+'m de '+estado.unidadeProxima+' (dentro do raio permitido).</div>';
+      } else {
+        box.className = "status-box warn";
+        box.innerHTML = '<div class="dot"></div><div class="txt"><b>Fora do raio da unidade</b>Você está a '+estado.distanciaM+'m de '+estado.unidadeProxima+' (unidade mais próxima). O registro será enviado com esse aviso.</div>';
+      }
+      $("btn-continuar-loc").disabled = false;
+    }, function(erro){
+      let msg = "Não foi possível obter sua localização.";
+      if(erro.code === 1) msg = "Permissão de localização negada. Ative o GPS/localização para o navegador e tente novamente.";
+      else if(erro.code === 2) msg = "Localização indisponível no momento.";
+      else if(erro.code === 3) msg = "Tempo esgotado ao buscar localização.";
+      box.className = "status-box err";
+      box.innerHTML = '<div class="dot"></div><div class="txt"><b>Erro de localização</b>'+msg+'</div>';
+      $("btn-continuar-loc").disabled = true;
+    }, { enableHighAccuracy:true, timeout:15000, maximumAge:0 });
+  };
+
+  window.irParaEtapa3 = function(){
+    mostrarEtapa(3);
+    resetarEtapa3Ui();
+    iniciarCamera();
+  };
+
+  // ---------- ETAPA 3: CÂMERA + VERIFICAÇÃO ----------
+  function resetarEtapa3Ui(){
+    estado.verificado = false;
+    estado.metodoVerificacao = null;
+    estado.distanciaFacial = null;
+    estado.descritorCapturado = null;
+    estado.candidatoChave = null;
+    estado.candidatoNome = null;
+    estado.candidatoDistancia = null;
+    estado.funcKey = "";
+    estado.nome = "";
+    $("status-verificacao").classList.add("hidden");
+    $("bloco-confirmacao-facial").classList.add("hidden");
+    $("bloco-manual").classList.add("hidden");
+    $("bloco-pin").classList.add("hidden");
+    $("input-pin-func").value = "";
+    $("erro-pin-func").classList.add("hidden");
+    $("btn-continuar-foto").disabled = true;
+  }
+
+  function iniciarCamera(){
+    const erroEl = $("erro-camera");
+    erroEl.classList.add("hidden");
+    $("video").classList.remove("hidden");
+    $("btn-shutter").classList.remove("hidden");
+    $("camera-wrap").classList.remove("hidden");
+    $("foto-preview").classList.add("hidden");
+    $("btn-repetir-foto").classList.add("hidden");
+
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      erroEl.textContent = "Este navegador não permite acesso à câmera.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio:false })
+      .then(function(stream){
+        estado.streamCamera = stream;
+        $("video").srcObject = stream;
+      })
+      .catch(function(){
+        erroEl.textContent = "Não foi possível acessar a câmera. Verifique as permissões do navegador.";
+        erroEl.classList.remove("hidden");
+      });
+  }
+
+  function pararCamera(){
+    if(estado.streamCamera){
+      estado.streamCamera.getTracks().forEach(t=>t.stop());
+      estado.streamCamera = null;
+    }
+  }
+
+  function mostrarBlocoManual(mensagem){
+    const statusBox = $("status-verificacao");
+    statusBox.classList.remove("hidden");
+    statusBox.className = "status-box warn";
+    statusBox.innerHTML = '<div class="dot"></div><div class="txt"><b>' + mensagem + '</b></div>';
+    $("bloco-confirmacao-facial").classList.add("hidden");
+    $("bloco-manual").classList.remove("hidden");
+  }
+
+  window.capturarFoto = async function(){
+    const video = $("video");
+    if(!video.videoWidth){ return; }
+
+    const statusBox = $("status-verificacao");
+    statusBox.classList.remove("hidden");
+    statusBox.className = "status-box";
+    statusBox.innerHTML = '<div class="spinner"></div><div class="txt"><b>Identificando...</b>Aguarde um instante.</div>';
+
+    // 1) tenta obter o descritor facial ANTES de parar a câmera
+    let descritorCapturado = null;
+    try{
+      await modelosProntos;
+      descritorCapturado = await obterDescritorDeVideo(video);
+    }catch(e){
+      descritorCapturado = null;
+    }
+    estado.descritorCapturado = descritorCapturado;
+
+    // 2) captura a foto (usada como registro/comprovante independente do resultado da identificação)
+    const canvas = document.createElement("canvas");
+    const larguraAlvo = 480;
+    const escala = larguraAlvo / video.videoWidth;
+    canvas.width = larguraAlvo;
+    canvas.height = video.videoHeight * escala;
+    const ctx = canvas.getContext("2d");
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    estado.fotoDataUrl = canvas.toDataURL("image/jpeg", 0.6);
+
+    $("foto-preview").src = estado.fotoDataUrl;
+    $("foto-preview").classList.remove("hidden");
+    $("video").classList.add("hidden");
+    $("btn-shutter").classList.add("hidden");
+    $("btn-repetir-foto").classList.remove("hidden");
+    pararCamera();
+
+    // 3) identificação automática (1:N) contra todos os funcionários com rosto cadastrado
+    if(!descritorCapturado){
+      mostrarBlocoManual("Não conseguimos detectar seu rosto nessa foto. Toque na sua foto na lista abaixo.");
+      return;
+    }
+
+    let melhorChave = null, melhorNome = null, melhorDistancia = Infinity;
+    Object.entries(funcionariosCache).forEach(function(e){
+      const chave = e[0], reg = e[1];
+      if(reg.descritor){
+        const d = faceapi.euclideanDistance(descritorCapturado, reg.descritor);
+        if(d < melhorDistancia){ melhorDistancia = d; melhorChave = chave; melhorNome = reg.nome; }
+      }
+    });
+
+    if(melhorChave && melhorDistancia <= LIMIAR_AUTO){
+      estado.candidatoChave = melhorChave;
+      estado.candidatoNome = melhorNome;
+      estado.candidatoDistancia = melhorDistancia;
+      statusBox.classList.add("hidden");
+      const regCandidato = funcionariosCache[melhorChave];
+      $("foto-candidato").src = (regCandidato && regCandidato.fotoRef) ? regCandidato.fotoRef : estado.fotoDataUrl;
+      $("texto-confirmacao-facial").textContent = "É você?";
+      $("bloco-confirmacao-facial").classList.remove("hidden");
+    } else {
+      mostrarBlocoManual("Não conseguimos te identificar automaticamente. Toque na sua foto.");
+    }
+  };
+
+  window.confirmarIdentidadeFacial = function(sim){
+    $("bloco-confirmacao-facial").classList.add("hidden");
+    const statusBox = $("status-verificacao");
+
+    if(sim){
+      estado.funcKey = estado.candidatoChave;
+      estado.nome = estado.candidatoNome;
+      estado.verificado = true;
+      estado.metodoVerificacao = "facial";
+      estado.distanciaFacial = estado.candidatoDistancia;
+      statusBox.classList.remove("hidden");
+      statusBox.className = "status-box ok";
+      statusBox.innerHTML = '<div class="dot"></div><div class="txt"><b>Identidade confirmada: ' + escaparHtml(estado.nome) + '</b></div>';
+      $("btn-continuar-foto").disabled = false;
+    } else {
+      mostrarBlocoManual("Sem problema — toque na sua foto.");
+    }
+  };
+
+  window.confirmarPin = function(){
+    const registro = funcionariosCache[estado.funcKey];
+    const erroEl = $("erro-pin-func");
+    const digitado = $("input-pin-func").value.trim();
+
+    if(!registro || !registro.pin){
+      erroEl.textContent = "PIN não cadastrado para este funcionário.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+    if(digitado === registro.pin){
+      estado.verificado = true;
+      estado.metodoVerificacao = "pin";
+      erroEl.classList.add("hidden");
+      $("bloco-pin").classList.add("hidden");
+      const statusBox = $("status-verificacao");
+      statusBox.classList.remove("hidden");
+      statusBox.className = "status-box ok";
+      statusBox.innerHTML = '<div class="dot"></div><div class="txt"><b>Identidade confirmada por PIN</b></div>';
+      $("btn-continuar-foto").disabled = false;
+    } else {
+      erroEl.textContent = "PIN incorreto.";
+      erroEl.classList.remove("hidden");
+    }
+  };
+
+  window.refazerFoto = function(){
+    estado.fotoDataUrl = null;
+    resetarEtapa3Ui();
+    iniciarCamera();
+  };
+
+  window.irParaEtapa4 = function(){
+    if(!estado.verificado){ return; }
+    montarResumo();
+    mostrarEtapa(4);
+  };
+
+  // ---------- ETAPA 4: RESUMO ----------
+  function montarResumo(){
+    const resumo = $("resumo");
+    const agora = new Date();
+    const statusLoc = estado.dentroDoRaio
+      ? ("Dentro do raio · "+estado.distanciaM+"m de "+estado.unidadeProxima)
+      : ("Fora do raio · "+estado.distanciaM+"m de "+estado.unidadeProxima);
+    const statusVerif = estado.metodoVerificacao === "facial" ? "Reconhecimento facial" : "PIN";
+
+    resumo.innerHTML =
+      linhaResumo("Nome", estado.nome) +
+      linhaResumo("Tipo", estado.tipo === "entrada" ? "Entrada" : "Saída") +
+      linhaResumo("Data/hora", formatarHora(agora)) +
+      linhaResumo("Localização", statusLoc) +
+      linhaResumo("Verificação", statusVerif);
+  }
+
+  function linhaResumo(k, v){
+    return '<div class="resumo-linha"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
+  }
+
+  // ---------- ETAPA 4: ENVIO ----------
+  window.enviarRegistro = function(){
+    if(!estado.verificado){ return; }
+    const btn = $("btn-enviar");
+    const erroEl = $("erro-envio");
+    erroEl.classList.add("hidden");
+    btn.disabled = true;
+    btn.textContent = "Enviando...";
+
+    const agora = new Date();
+    const registro = {
+      nome: estado.nome,
+      tipo: estado.tipo,
+      timestamp: agora.getTime(),
+      dataHoraLocal: formatarHora(agora),
+      lat: estado.lat,
+      lng: estado.lng,
+      precisaoMetros: estado.precisaoM,
+      unidadeProxima: estado.unidadeProxima,
+      distanciaMetros: estado.distanciaM,
+      dentroDoRaio: estado.dentroDoRaio,
+      foto: estado.fotoDataUrl,
+      verificadoPor: estado.metodoVerificacao,
+      distanciaFacial: estado.distanciaFacial
+    };
+
+    db.ref(CAMINHO_REGISTROS).push(registro)
+      .then(function(){
+        $("sucesso-titulo").textContent = estado.tipo === "entrada" ? "Entrada registrada!" : "Saída registrada!";
+        $("sucesso-detalhe").textContent = estado.nome + " · " + formatarHora(agora) +
+          (estado.dentroDoRaio ? "" : " · Fora do raio, registrado com aviso.");
+        mostrarEtapa(5);
+      })
+      .catch(function(err){
+        erroEl.textContent = "Falha ao enviar o registro. Verifique sua internet e tente novamente. (" + err.message + ")";
+        erroEl.classList.remove("hidden");
+      })
+      .finally(function(){
+        btn.disabled = false;
+        btn.textContent = "Confirmar ponto";
+      });
+  };
+
+  // ---------- REINICIAR (fluxo de ponto) ----------
+  window.reiniciar = function(){
+    estado.funcKey = "";
+    estado.nome = "";
+    estado.tipo = null;
+    estado.lat = null;
+    estado.lng = null;
+    estado.unidadeProxima = null;
+    estado.distanciaM = null;
+    estado.dentroDoRaio = false;
+    estado.fotoDataUrl = null;
+    estado.verificado = false;
+    estado.metodoVerificacao = null;
+    estado.distanciaFacial = null;
+    estado.descritorCapturado = null;
+    estado.candidatoChave = null;
+    estado.candidatoNome = null;
+    estado.candidatoDistancia = null;
+
+    $("btn-entrada").classList.remove("active");
+    $("btn-saida").classList.remove("active");
+    $("erro-etapa1").classList.add("hidden");
+
+    mostrarEtapa(1);
+  };
+
+  // ====================================================================
+  // ADMIN
+  // ====================================================================
+
+  window.abrirAdmin = function(){
+    for(let i=1;i<=5;i++){ $("etapa-"+i).classList.add("hidden"); }
+    if(adminEstado.autenticado){
+      $("tela-admin-login").classList.add("hidden");
+      $("tela-admin").classList.remove("hidden");
+      $("app").classList.add("admin-wide");
+      renderizarListaFuncionariosAdmin();
+    } else {
+      $("input-senha-admin").value = "";
+      $("erro-admin-login").classList.add("hidden");
+      $("tela-admin-login").classList.remove("hidden");
+      $("tela-admin").classList.add("hidden");
+    }
+    window.scrollTo(0,0);
+  };
+
+  window.fecharAdmin = function(){
+    mostrarEtapa(1);
+  };
+
+  window.sairAdmin = function(){
+    adminEstado.autenticado = false;
+    mostrarEtapa(1);
+  };
+
+  window.tentarLoginAdmin = function(){
+    const senha = $("input-senha-admin").value;
+    if(senha === ADMIN_SENHA){
+      adminEstado.autenticado = true;
+      $("tela-admin-login").classList.add("hidden");
+      $("tela-admin").classList.remove("hidden");
+      $("app").classList.add("admin-wide");
+      renderizarListaFuncionariosAdmin();
+    } else {
+      $("erro-admin-login").textContent = "Senha incorreta.";
+      $("erro-admin-login").classList.remove("hidden");
+    }
+  };
+
+  window.mudarAbaAdmin = function(aba){
+    $("tab-func").classList.toggle("active", aba==="func");
+    $("tab-rel").classList.toggle("active", aba==="rel");
+    $("painel-func").classList.toggle("hidden", aba!=="func");
+    $("painel-cadastro-facial").classList.add("hidden");
+    $("painel-rel").classList.toggle("hidden", aba!=="rel");
+  };
+
+  // ---------- ADMIN: FUNCIONÁRIOS ----------
+  function renderizarListaFuncionariosAdmin(){
+    const ul = $("lista-func");
+    const entradas = Object.entries(funcionariosCache)
+      .sort((a,b) => a[1].nome.localeCompare(b[1].nome, "pt-BR"));
+
+    if(entradas.length === 0){
+      ul.innerHTML = '<li style="color:var(--texto-suave);">Nenhum funcionário cadastrado ainda.</li>';
+      return;
+    }
+    ul.innerHTML = entradas.map(function(e){
+      const chave = e[0], reg = e[1];
+      const completo = !!(reg.pin && reg.descritor);
+      const badge = completo
+        ? '<span class="badge ok">Rosto e PIN cadastrados</span>'
+        : '<span class="badge pendente">Pendente: rosto/PIN</span>';
+      const badgeTipo = reg.tipo === "clt"
+        ? '<span class="badge ok" style="background:#E4ECF5;color:var(--azul-2);">CLT</span>'
+        : '<span class="badge pendente" style="background:#EDF1F4;color:var(--texto-suave);">Diarista</span>';
+      const outroTipo = reg.tipo === "clt" ? "diarista" : "clt";
+      const outroTipoLabel = reg.tipo === "clt" ? "Diarista" : "CLT";
+      return '<li>'+
+        '<div class="func-linha">'+
+          '<div class="func-nome">'+escaparHtml(reg.nome)+'<br>'+badgeTipo+' '+badge+'</div>'+
+          '<div class="func-acoes">'+
+            '<button class="btn-small primary" onclick="abrirCadastroFacial(\''+chave+'\')">'+(completo ? "Refazer" : "Cadastrar")+'</button>'+
+          '</div>'+
+        '</div>'+
+        '<div class="form-linha" style="margin-top:8px;">'+
+          '<input type="text" id="pix-'+chave+'" placeholder="Chave PIX" value="'+escaparHtml(reg.chavePix || "")+'">'+
+          '<button class="btn-small" style="flex-shrink:0;" onclick="salvarPix(\''+chave+'\')">Salvar PIX</button>'+
+        '</div>'+
+        '<div class="func-acoes" style="justify-content:flex-end; margin-top:6px;">'+
+          '<button class="btn-small" onclick="alternarTipoFuncionario(\''+chave+'\',\''+outroTipo+'\')">Tornar '+outroTipoLabel+'</button>'+
+          '<button class="btn-small danger" onclick="removerFuncionario(\''+chave+'\')">Remover</button>'+
+        '</div>'+
+      '</li>';
+    }).join("");
+  }
+
+  window.salvarPix = function(chave){
+    const input = $("pix-" + chave);
+    const valor = input.value.trim();
+    db.ref(CAMINHO_FUNCIONARIOS + "/" + chave + "/chavePix").set(valor || null);
+  };
+
+  window.importarPixIniciais = function(){
+    const atualizacoes = {};
+    let quantidade = 0;
+    Object.entries(funcionariosCache).forEach(function(e){
+      const chave = e[0], reg = e[1];
+      if(!reg.chavePix && PIX_INICIAIS[reg.nome]){
+        atualizacoes[chave + "/chavePix"] = PIX_INICIAIS[reg.nome];
+        quantidade++;
+      }
+    });
+    if(quantidade === 0){
+      alert("Nenhuma chave PIX nova para importar (todos já têm chave ou não estão na lista inicial).");
+      return;
+    }
+    if(!confirm("Importar " + quantidade + " chave(s) PIX da planilha original de Caxias/SJM?")) return;
+    db.ref(CAMINHO_FUNCIONARIOS).update(atualizacoes);
+  };
+
+  window.alternarTipoFuncionario = function(chave, novoTipo){
+    db.ref(CAMINHO_FUNCIONARIOS + "/" + chave + "/tipo").set(novoTipo);
+  };
+
+  window.adicionarFuncionario = function(){
+    const input = $("input-novo-func");
+    const tipoSelect = $("input-novo-func-tipo");
+    const erroEl = $("erro-func");
+    const nome = input.value.trim();
+    erroEl.classList.add("hidden");
+
+    if(nome.length < 3){
+      erroEl.textContent = "Digite o nome completo.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+    const jaExiste = Object.values(funcionariosCache).some(r => r.nome.toLowerCase() === nome.toLowerCase());
+    if(jaExiste){
+      erroEl.textContent = "Esse nome já está cadastrado.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+
+    db.ref(CAMINHO_FUNCIONARIOS).push({ nome: nome, tipo: tipoSelect.value })
+      .then(function(){ input.value = ""; })
+      .catch(function(err){
+        erroEl.textContent = "Erro ao salvar: " + err.message;
+        erroEl.classList.remove("hidden");
+      });
+  };
+
+  window.removerFuncionario = function(chave){
+    if(!confirm("Remover este funcionário da lista de ponto?")) return;
+    db.ref(CAMINHO_FUNCIONARIOS + "/" + chave).remove();
+  };
+
+  window.importarListaInicial = function(){
+    const jaExistentes = new Set(Object.values(funcionariosCache).map(r => r.nome.toLowerCase()));
+    const novos = LISTA_INICIAL_FUNCIONARIOS.filter(n => !jaExistentes.has(n.toLowerCase()));
+
+    if(novos.length === 0){
+      alert("Todos os nomes da lista inicial já estão cadastrados.");
+      return;
+    }
+    if(!confirm("Importar " + novos.length + " nome(s) novo(s) da lista inicial de Caxias/SJM? Depois de importar, cada um ainda precisa ter rosto e PIN cadastrados individualmente.")) return;
+
+    const atualizacoes = {};
+    novos.forEach(function(nome){
+      const novaChave = db.ref(CAMINHO_FUNCIONARIOS).push().key;
+      atualizacoes[novaChave] = { nome: nome, tipo: "diarista" };
+    });
+    db.ref(CAMINHO_FUNCIONARIOS).update(atualizacoes);
+  };
+
+  // ---------- ADMIN: CADASTRO DE ROSTO + PIN ----------
+  window.abrirCadastroFacial = function(chave){
+    const reg = funcionariosCache[chave];
+    if(!reg) return;
+    adminEstado.chaveCadastroAtual = chave;
+    adminEstado.fotoAdminDataUrl = null;
+    adminEstado.descritorAdmin = null;
+
+    $("cadastro-facial-titulo").textContent = "Cadastrar rosto e PIN — " + reg.nome;
+    $("input-pin-admin").value = "";
+    $("input-pin-admin-confirmar").value = "";
+    $("erro-cadastro-facial").classList.add("hidden");
+    $("ok-cadastro-facial").classList.add("hidden");
+
+    $("painel-func").classList.add("hidden");
+    $("painel-cadastro-facial").classList.remove("hidden");
+    window.scrollTo(0,0);
+    iniciarCameraAdmin();
+  };
+
+  window.fecharCadastroFacial = function(){
+    pararCameraAdmin();
+    $("painel-cadastro-facial").classList.add("hidden");
+    $("painel-func").classList.remove("hidden");
+  };
+
+  function iniciarCameraAdmin(){
+    const erroEl = $("erro-camera-admin");
+    erroEl.classList.add("hidden");
+    $("video-admin").classList.remove("hidden");
+    $("foto-preview-admin").classList.add("hidden");
+    $("btn-repetir-foto-admin").classList.add("hidden");
+
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      erroEl.textContent = "Este navegador não permite acesso à câmera.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio:false })
+      .then(function(stream){
+        adminEstado.streamCameraAdmin = stream;
+        $("video-admin").srcObject = stream;
+      })
+      .catch(function(){
+        erroEl.textContent = "Não foi possível acessar a câmera.";
+        erroEl.classList.remove("hidden");
+      });
+  }
+
+  function pararCameraAdmin(){
+    if(adminEstado.streamCameraAdmin){
+      adminEstado.streamCameraAdmin.getTracks().forEach(t=>t.stop());
+      adminEstado.streamCameraAdmin = null;
+    }
+  }
+
+  window.capturarFotoAdmin = async function(){
+    const video = $("video-admin");
+    if(!video.videoWidth){ return; }
+    const erroEl = $("erro-cadastro-facial");
+    erroEl.classList.add("hidden");
+
+    await modelosProntos;
+    const descritor = await obterDescritorDeVideo(video);
+
+    const canvas = document.createElement("canvas");
+    const larguraAlvo = 320;
+    const escala = larguraAlvo / video.videoWidth;
+    canvas.width = larguraAlvo;
+    canvas.height = video.videoHeight * escala;
+    const ctx = canvas.getContext("2d");
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    adminEstado.fotoAdminDataUrl = canvas.toDataURL("image/jpeg", 0.6);
+
+    $("foto-preview-admin").src = adminEstado.fotoAdminDataUrl;
+    $("foto-preview-admin").classList.remove("hidden");
+    $("video-admin").classList.add("hidden");
+    $("btn-repetir-foto-admin").classList.remove("hidden");
+    pararCameraAdmin();
+
+    if(!descritor){
+      erroEl.textContent = "Nenhum rosto detectado nessa foto. Tire outra, com boa iluminação e olhando para a câmera.";
+      erroEl.classList.remove("hidden");
+      adminEstado.descritorAdmin = null;
+    } else {
+      adminEstado.descritorAdmin = descritor;
+    }
+  };
+
+  window.refazerFotoAdmin = function(){
+    adminEstado.fotoAdminDataUrl = null;
+    adminEstado.descritorAdmin = null;
+    iniciarCameraAdmin();
+  };
+
+  window.salvarCadastroFacial = function(){
+    const erroEl = $("erro-cadastro-facial");
+    const okEl = $("ok-cadastro-facial");
+    erroEl.classList.add("hidden");
+    okEl.classList.add("hidden");
+
+    const pin1 = $("input-pin-admin").value.trim();
+    const pin2 = $("input-pin-admin-confirmar").value.trim();
+
+    if(!/^[0-9]{4}$/.test(pin1)){
+      erroEl.textContent = "O PIN deve ter exatamente 4 números.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+    if(pin1 !== pin2){
+      erroEl.textContent = "Os dois PINs digitados não coincidem.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+    if(!adminEstado.descritorAdmin){
+      erroEl.textContent = "Tire uma foto com o rosto detectado antes de salvar.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+
+    const chave = adminEstado.chaveCadastroAtual;
+    const reg = funcionariosCache[chave];
+    if(!chave || !reg) return;
+
+    db.ref(CAMINHO_FUNCIONARIOS + "/" + chave).update({
+      nome: reg.nome,
+      pin: pin1,
+      descritor: adminEstado.descritorAdmin,
+      fotoRef: adminEstado.fotoAdminDataUrl
+    }).then(function(){
+      okEl.textContent = "Cadastro salvo com sucesso.";
+      okEl.classList.remove("hidden");
+      setTimeout(function(){
+        fecharCadastroFacial();
+      }, 900);
+    }).catch(function(err){
+      erroEl.textContent = "Erro ao salvar: " + err.message;
+      erroEl.classList.remove("hidden");
+    });
+  };
+
+  // ---------- ADMIN: RELATÓRIO ----------
+
+  function parseFeriados(texto){
+    // aceita "dd/mm/aaaa, dd/mm/aaaa" e devolve um Set de chaves "yyyy-mm-dd"
+    const set = new Set();
+    (texto || "").split(",").forEach(function(pedaco){
+      const t = pedaco.trim();
+      const m = t.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+      if(m){ set.add(m[3] + "-" + m[2] + "-" + m[1]); }
+    });
+    return set;
+  }
+
+  function horasNoturnasNoIntervalo(inicioMs, fimMs){
+    let totalMs = 0;
+    const cursor = new Date(inicioMs);
+    cursor.setDate(cursor.getDate() - 1);
+    cursor.setHours(0,0,0,0);
+    const fimData = new Date(fimMs);
+    while(cursor.getTime() <= fimData.getTime()){
+      const janelaInicio = new Date(cursor); janelaInicio.setHours(22,0,0,0);
+      const janelaFim = new Date(cursor); janelaFim.setDate(janelaFim.getDate()+1); janelaFim.setHours(5,0,0,0);
+      const ini = Math.max(inicioMs, janelaInicio.getTime());
+      const fim = Math.min(fimMs, janelaFim.getTime());
+      if(fim > ini){ totalMs += (fim - ini); }
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return totalMs / 3600000;
+  }
+
+  function chaveSemana(ms){
+    const d = new Date(ms);
+    const diaSemana = d.getDay(); // 0=domingo
+    const diffParaSegunda = (diaSemana === 0) ? -6 : (1 - diaSemana);
+    const segunda = new Date(d);
+    segunda.setDate(d.getDate() + diffParaSegunda);
+    segunda.setHours(0,0,0,0);
+    return chaveDia(segunda);
+  }
+
+  function formatarIntervaloSemana(chaveSegunda){
+    const [a,m,d] = chaveSegunda.split("-").map(Number);
+    const segunda = new Date(a, m-1, d);
+    const domingo = new Date(segunda); domingo.setDate(segunda.getDate()+6);
+    return formatarDiaBr(chaveSegunda) + " a " + formatarDiaBr(chaveDia(domingo));
+  }
+
+  function classificarDia(ms, feriadosSet){
+    const d = new Date(ms);
+    const diaSemana = d.getDay();
+    if(feriadosSet.has(chaveDia(d))) return "feriado";
+    if(diaSemana === 0) return "domingo";
+    if(diaSemana === 6) return "sabado";
+    return "semana";
+  }
+
+  function valorDiaria(horas, tipoDia, temNoturno){
+    if(tipoDia === "domingo" || tipoDia === "feriado"){
+      return (horas/8) * 200;
+    }
+    if(tipoDia === "sabado"){
+      return (horas/10) * 150;
+    }
+    const base = temNoturno ? 96 : 80;
+    if(horas <= 10){ return (horas/10) * base; }
+    return base + (horas-10) * 20;
+  }
+
+  function parearSessoes(registros){
+    const grupos = {};
+    registros.forEach(function(r){
+      const dia = chaveDia(new Date(r.timestamp));
+      const chave = r.nome + "||" + dia;
+      if(!grupos[chave]) grupos[chave] = { nome: r.nome, dia: dia, eventos: [] };
+      grupos[chave].eventos.push(r);
+    });
+
+    const sessoesPorNome = {};
+    const avisosPorNomeDia = {};
+
+    Object.values(grupos).forEach(function(g){
+      const eventos = g.eventos.slice().sort((a,b) => a.timestamp - b.timestamp);
+      let pendente = null;
+      const avisos = [];
+
+      eventos.forEach(function(ev){
+        if(ev.tipo === "entrada"){
+          if(pendente){ avisos.push("entrada duplicada sem saída anterior"); }
+          pendente = ev;
+        } else if(ev.tipo === "saida"){
+          if(pendente){
+            if(!sessoesPorNome[g.nome]) sessoesPorNome[g.nome] = [];
+            sessoesPorNome[g.nome].push({
+              inicio: pendente.timestamp,
+              fim: ev.timestamp,
+              horas: (ev.timestamp - pendente.timestamp) / 3600000,
+              dia: g.dia
+            });
+            pendente = null;
+          } else {
+            avisos.push("saída sem entrada correspondente");
+          }
+        }
+      });
+      if(pendente){ avisos.push("entrada sem saída registrada"); }
+      if(avisos.length){ avisosPorNomeDia[g.nome + "||" + g.dia] = avisos.join("; "); }
+    });
+
+    return { sessoesPorNome: sessoesPorNome, avisosPorNomeDia: avisosPorNomeDia };
+  }
+
+  function montarResumoDiaristas(sessoesPorNome, avisosPorNomeDia, feriadosSet){
+    const linhas = [];
+    Object.keys(sessoesPorNome).forEach(function(nome){
+      const reg = Object.values(funcionariosCache).find(r => r.nome === nome);
+      if(reg && reg.tipo === "clt") return;
+
+      const porDia = {};
+      sessoesPorNome[nome].forEach(function(s){
+        if(!porDia[s.dia]) porDia[s.dia] = { horas:0, horasNoturnas:0 };
+        porDia[s.dia].horas += s.horas;
+        porDia[s.dia].horasNoturnas += horasNoturnasNoIntervalo(s.inicio, s.fim);
+      });
+
+      Object.keys(porDia).forEach(function(dia){
+        const info = porDia[dia];
+        const tipoDia = classificarDia(new Date(dia + "T12:00:00").getTime(), feriadosSet);
+        const valor = valorDiaria(info.horas, tipoDia, info.horasNoturnas > 0);
+        linhas.push({
+          nome: nome, dia: dia, tipoDia: tipoDia,
+          horas: info.horas, valor: valor,
+          avisos: avisosPorNomeDia[nome + "||" + dia] || ""
+        });
+      });
+    });
+    linhas.sort(function(a,b){
+      const c = a.nome.localeCompare(b.nome, "pt-BR");
+      return c !== 0 ? c : a.dia.localeCompare(b.dia);
+    });
+    return linhas;
+  }
+
+  function montarResumoClt(sessoesPorNome, avisosPorNomeDia, feriadosSet){
+    const porNomeSemana = {};
+    Object.keys(sessoesPorNome).forEach(function(nome){
+      const reg = Object.values(funcionariosCache).find(r => r.nome === nome);
+      if(!reg || reg.tipo !== "clt") return;
+
+      sessoesPorNome[nome].forEach(function(s){
+        const semana = chaveSemana(s.inicio);
+        const chaveNS = nome + "||" + semana;
+        if(!porNomeSemana[chaveNS]){
+          porNomeSemana[chaveNS] = {
+            nome: nome, semana: semana,
+            horasSemanaUtil: 0, horasExtra50: 0, horasDobra100: 0, horasNoturnas: 0,
+            dias: new Set()
+          };
+        }
+        const acc = porNomeSemana[chaveNS];
+        const tipoDia = classificarDia(s.inicio, feriadosSet);
+        acc.dias.add(s.dia);
+        acc.horasNoturnas += horasNoturnasNoIntervalo(s.inicio, s.fim);
+
+        if(tipoDia === "domingo" || tipoDia === "feriado"){
+          acc.horasDobra100 += s.horas;
+        } else if(tipoDia === "sabado"){
+          acc.horasExtra50 += s.horas;
+        } else {
+          acc.horasSemanaUtil += s.horas;
+        }
+      });
+    });
+
+    const linhas = [];
+    Object.values(porNomeSemana).forEach(function(acc){
+      const horasNormais = Math.min(acc.horasSemanaUtil, 44);
+      const extraSemanaUtil = Math.max(0, acc.horasSemanaUtil - 44);
+      const avisos = Array.from(acc.dias)
+        .map(function(dia){ return avisosPorNomeDia[acc.nome + "||" + dia]; })
+        .filter(Boolean).join("; ");
+
+      linhas.push({
+        nome: acc.nome, semana: acc.semana,
+        horasNormais: horasNormais,
+        horasExtras50: extraSemanaUtil + acc.horasExtra50,
+        horasNoturnas: acc.horasNoturnas,
+        horasDobra100: acc.horasDobra100,
+        avisos: avisos
+      });
+    });
+
+    linhas.sort(function(a,b){
+      const c = a.nome.localeCompare(b.nome, "pt-BR");
+      return c !== 0 ? c : a.semana.localeCompare(b.semana);
+    });
+    return linhas;
+  }
+
+  window.gerarRelatorio = function(){
+    const erroEl = $("erro-relatorio");
+    erroEl.classList.add("hidden");
+    $("resultado-relatorio").classList.add("hidden");
+
+    const deStr = $("rel-data-de").value;
+    const ateStr = $("rel-data-ate").value;
+    if(!deStr || !ateStr){
+      erroEl.textContent = "Selecione as datas de início e fim.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+
+    const inicio = new Date(deStr + "T00:00:00");
+    const fim = new Date(ateStr + "T23:59:59");
+    if(inicio > fim){
+      erroEl.textContent = "A data 'De' deve ser antes da data 'Até'.";
+      erroEl.classList.remove("hidden");
+      return;
+    }
+
+    const feriadosSet = parseFeriados($("rel-feriados").value);
+
+    db.ref(CAMINHO_REGISTROS).once("value")
+      .then(function(snap){
+        const dados = snap.val() || {};
+        const registros = Object.values(dados).filter(function(r){
+          return r.timestamp >= inicio.getTime() && r.timestamp <= fim.getTime();
+        });
+
+        if(registros.length === 0){
+          erroEl.textContent = "Nenhum registro encontrado nesse período.";
+          erroEl.classList.remove("hidden");
+          return;
+        }
+
+        registros.sort((a,b) => a.timestamp - b.timestamp);
+        const pareamento = parearSessoes(registros);
+        const diaristas = montarResumoDiaristas(pareamento.sessoesPorNome, pareamento.avisosPorNomeDia, feriadosSet);
+        const clt = montarResumoClt(pareamento.sessoesPorNome, pareamento.avisosPorNomeDia, feriadosSet);
+
+        adminEstado.ultimoRelatorio = { bruto: registros, diaristas: diaristas, clt: clt };
+        renderizarTabelaBruta(registros);
+        renderizarTabelaResumoDiarista(diaristas);
+        renderizarTabelaResumoClt(clt);
+        $("resultado-relatorio").classList.remove("hidden");
+      })
+      .catch(function(err){
+        erroEl.textContent = "Erro ao buscar registros: " + err.message;
+        erroEl.classList.remove("hidden");
+      });
+  };
+
+  function pixDoNome(nome){
+    const reg = Object.values(funcionariosCache).find(r => r.nome === nome);
+    return reg && reg.chavePix ? reg.chavePix : "-";
+  }
+
+  function renderizarTabelaResumoDiarista(linhas){
+    if(linhas.length === 0){
+      $("tabela-resumo-diarista").innerHTML = "<tbody><tr><td>Nenhum diarista com registros no período.</td></tr></tbody>";
+      return;
+    }
+    const totalPorNome = {};
+    linhas.forEach(function(l){ totalPorNome[l.nome] = (totalPorNome[l.nome] || 0) + l.valor; });
+
+    const rotuloTipo = { semana:"Seg-Sex", sabado:"Sábado", domingo:"Domingo", feriado:"Feriado" };
+    let html = "<thead><tr><th>Nome</th><th>Chave PIX</th><th>Dia</th><th>Tipo</th><th>Horas</th><th>Valor</th><th>Aviso</th></tr></thead><tbody>";
+    linhas.forEach(function(l){
+      html += "<tr>"+
+        "<td>"+escaparHtml(l.nome)+"</td>"+
+        "<td>"+escaparHtml(pixDoNome(l.nome))+"</td>"+
+        "<td>"+formatarDiaBr(l.dia)+"</td>"+
+        "<td>"+rotuloTipo[l.tipoDia]+"</td>"+
+        "<td>"+formatarHoras(l.horas)+"</td>"+
+        "<td>R$ "+l.valor.toFixed(2)+"</td>"+
+        "<td class=\""+(l.avisos?"flag":"")+"\">"+escaparHtml(l.avisos || "-")+"</td>"+
+        "</tr>";
+    });
+    html += "</tbody><tfoot>";
+    Object.keys(totalPorNome).sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(function(nome){
+      html += "<tr><td colspan=\"5\"><b>Total "+escaparHtml(nome)+"</b></td>"+
+        "<td colspan=\"2\"><b>R$ "+totalPorNome[nome].toFixed(2)+"</b></td></tr>";
+    });
+    html += "</tfoot>";
+    $("tabela-resumo-diarista").innerHTML = html;
+  }
+
+  function renderizarTabelaResumoClt(linhas){
+    if(linhas.length === 0){
+      $("tabela-resumo-clt").innerHTML = "<tbody><tr><td>Nenhum CLT com registros no período.</td></tr></tbody>";
+      return;
+    }
+    let html = "<thead><tr><th>Nome</th><th>Chave PIX</th><th>Semana</th><th>Normais</th><th>Extras 50%</th><th>Noturnas</th><th>Dobra 100%</th><th>Aviso</th></tr></thead><tbody>";
+    linhas.forEach(function(l){
+      html += "<tr>"+
+        "<td>"+escaparHtml(l.nome)+"</td>"+
+        "<td>"+escaparHtml(pixDoNome(l.nome))+"</td>"+
+        "<td>"+formatarIntervaloSemana(l.semana)+"</td>"+
+        "<td>"+formatarHoras(l.horasNormais)+"</td>"+
+        "<td>"+formatarHoras(l.horasExtras50)+"</td>"+
+        "<td>"+formatarHoras(l.horasNoturnas)+"</td>"+
+        "<td>"+formatarHoras(l.horasDobra100)+"</td>"+
+        "<td class=\""+(l.avisos?"flag":"")+"\">"+escaparHtml(l.avisos || "-")+"</td>"+
+        "</tr>";
+    });
+    html += "</tbody>";
+    $("tabela-resumo-clt").innerHTML = html;
+  }
+
+  function renderizarTabelaBruta(registros){
+    let html = "<thead><tr><th>Nome</th><th>Tipo</th><th>Data/hora</th><th>Unidade</th><th>Dentro do raio</th><th>Verificação</th></tr></thead><tbody>";
+    registros.forEach(function(r){
+      html += "<tr>"+
+        "<td>"+escaparHtml(r.nome)+"</td>"+
+        "<td>"+(r.tipo === "entrada" ? "Entrada" : "Saída")+"</td>"+
+        "<td>"+escaparHtml(r.dataHoraLocal || "")+"</td>"+
+        "<td>"+escaparHtml(r.unidadeProxima || "-")+" ("+ (r.distanciaMetros!=null? r.distanciaMetros+"m":"-") +")</td>"+
+        "<td class=\""+(r.dentroDoRaio?"":"flag")+"\">"+(r.dentroDoRaio ? "Sim" : "Não")+"</td>"+
+        "<td>"+(r.verificadoPor === "facial" ? "Facial" : (r.verificadoPor === "pin" ? "PIN" : "-"))+"</td>"+
+        "</tr>";
+    });
+    html += "</tbody>";
+    $("tabela-bruta").innerHTML = html;
+  }
+
+  window.baixarExcel = function(){
+    if(!adminEstado.ultimoRelatorio) return;
+    const wb = XLSX.utils.book_new();
+    const rotuloTipo = { semana:"Seg-Sex", sabado:"Sábado", domingo:"Domingo", feriado:"Feriado" };
+
+    const diaristaLinhas = adminEstado.ultimoRelatorio.diaristas.map(function(l){
+      return {
+        Nome: l.nome,
+        "Chave PIX": pixDoNome(l.nome),
+        Dia: formatarDiaBr(l.dia),
+        "Tipo de dia": rotuloTipo[l.tipoDia],
+        Horas: formatarHoras(l.horas),
+        "Horas decimais": Number(l.horas.toFixed(2)),
+        "Valor (R$)": Number(l.valor.toFixed(2)),
+        Aviso: l.avisos || ""
+      };
+    });
+    const wsDiarista = XLSX.utils.json_to_sheet(diaristaLinhas);
+    XLSX.utils.book_append_sheet(wb, wsDiarista, "Diaristas");
+
+    const cltLinhas = adminEstado.ultimoRelatorio.clt.map(function(l){
+      return {
+        Nome: l.nome,
+        "Chave PIX": pixDoNome(l.nome),
+        Semana: formatarIntervaloSemana(l.semana),
+        "Horas normais": formatarHoras(l.horasNormais),
+        "Horas extras 50%": formatarHoras(l.horasExtras50),
+        "Horas noturnas (adicional)": formatarHoras(l.horasNoturnas),
+        "Horas dobra 100%": formatarHoras(l.horasDobra100),
+        Aviso: l.avisos || ""
+      };
+    });
+    const wsClt = XLSX.utils.json_to_sheet(cltLinhas);
+    XLSX.utils.book_append_sheet(wb, wsClt, "CLT");
+
+    const brutoLinhas = adminEstado.ultimoRelatorio.bruto.map(function(r){
+      return {
+        Nome: r.nome,
+        Tipo: r.tipo === "entrada" ? "Entrada" : "Saída",
+        "Data/hora": r.dataHoraLocal || "",
+        "Unidade mais próxima": r.unidadeProxima || "",
+        "Distância (m)": r.distanciaMetros,
+        "Dentro do raio": r.dentroDoRaio ? "Sim" : "Não",
+        "Verificação": r.verificadoPor === "facial" ? "Facial" : (r.verificadoPor === "pin" ? "PIN" : "")
+      };
+    });
+    const wsBruto = XLSX.utils.json_to_sheet(brutoLinhas);
+    XLSX.utils.book_append_sheet(wb, wsBruto, "Registros brutos");
+
+    const de = $("rel-data-de").value;
+    const ate = $("rel-data-ate").value;
+    XLSX.writeFile(wb, "relatorio-ponto-"+de+"_a_"+ate+".xlsx");
+  };
+
+  // ---------- INICIALIZAÇÃO ----------
+  carregarModelosFace();
+  iniciarCacheFuncionarios();
+  mostrarEtapa(1);
+
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
